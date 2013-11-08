@@ -25,6 +25,8 @@
     <x:Property Name="RedGatePublishPackageName" Type="InArgument(x:String)" />
     <x:Property Name="RedGatePublishSource" Type="InArgument(x:String)" />
     <x:Property Name="RedGatePublishTarget" Type="InArgument(x:String)" />
+    <x:Property Name="RedGatePublishApiKey" Type="InArgument(x:String)" />
+    <x:Property Name="RedGatePublishTimeout" Type="InArgument(x:String)" />
     <x:Property Name="RedGatePublish" Type="InArgument(x:Boolean)" />
   </x:Members>
   <this:Process.BuildSettings>[New Microsoft.TeamFoundation.Build.Workflow.Activities.BuildSettings()]</this:Process.BuildSettings>
@@ -55,6 +57,8 @@
       <mtbw:ProcessParameterMetadata Category="Red Gate" Description="Specify the package ID of the package to publish to Deployment Manager." DisplayName="Publish package name" ParameterName="RedGatePublishPackageName" />
       <mtbw:ProcessParameterMetadata Category="Red Gate" Description="Specify the source to be used for the publish to Deployment Manager.  Paths are relative to the sources path." DisplayName="Publish source" ParameterName="RedGatePublishSource" />
       <mtbw:ProcessParameterMetadata Category="Red Gate" Description="Specify the target to publish to.  For example to publish to the built-in deployment manager package feed on your machine, use: feed:http://localhost:80/nuget/.  Paths are relative to the sources path." DisplayName="Publish target" ParameterName="RedGatePublishTarget" />
+      <mtbw:ProcessParameterMetadata Category="Red Gate" Description="API key for the NuGet package feed to publish to, if required.  This is not required for the built-in package feed." DisplayName="Publish API key" ParameterName="RedGatePublishApiKey" />
+      <mtbw:ProcessParameterMetadata Category="Red Gate" Description="The maximum amount of time that RgPublish.exe will try to connect to a NuGet package feed.  Specify a time value in the format hh:mm:ss.  The default value is 00:00:30." DisplayName="Publish timeout" ParameterName="RedGatePublishTimeout" />
       <mtbw:ProcessParameterMetadata Category="Red Gate" Description="Publish the output of this build to Deployment Manager." DisplayName="Publish for deployment" ParameterName="RedGatePublish" />
     </mtbw:ProcessParameterMetadataCollection>
   </this:Process.Metadata>
@@ -479,7 +483,7 @@
                     <Variable x:TypeArguments="mtbc:IBuildDetail" Name="RedGateBuildDetail" />
                   </Sequence.Variables>
                   <mtbwa:GetBuildDetail Result="[RedGateBuildDetail]" mtbwt:BuildTrackingParticipant.Importance="None" />
-                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;&quot;&quot;/version={0}&quot;&quot;  &quot;&quot;/packageid={1}&quot;&quot; &quot;&quot;/source={2}&quot;&quot; &quot;&quot;/target={3}&quot;&quot;&quot;, RedGatePublishVersionNumber + &quot;.&quot; + RedGateBuildDetail.BuildNumber, RedGatePublishPackageName, RedGatePublishSource, RedGatePublishTarget)]" DisplayName="Invoke Process" FileName="[System.IO.Path.Combine(SourcesDirectory, System.IO.Path.Combine(RedGateToolsPath,&quot;RgPublish.exe&quot;))]" Result="[RedGateExitCode]" WorkingDirectory="[SourcesDirectory]" mtbwt:BuildTrackingParticipant.Importance="None">
+                  <mtbwa:InvokeProcess Arguments="[String.Format(&quot;&quot;&quot;/version={0}&quot;&quot; &quot;&quot;/packageid={1}&quot;&quot; &quot;&quot;/source={2}&quot;&quot; &quot;&quot;/target={3}&quot;&quot; &quot;&quot;{4}&quot;&quot; &quot;&quot;{5}&quot;&quot;&quot;, RedGatePublishVersionNumber + &quot;.&quot; + RedGateBuildDetail.BuildNumber, RedGatePublishPackageName, RedGatePublishSource, RedGatePublishTarget, If(String.IsNullOrWhiteSpace(RedGatePublishApiKey), &quot;/apikey=&quot; + RedGatePublishApiKey, &quot;&quot;), If(String.IsNullOrWhiteSpace(RedGatePublishTimeout), &quot;/timeout=&quot; + RedGatePublishTimeout, &quot;&quot;))]" DisplayName="Invoke Process" FileName="[System.IO.Path.Combine(SourcesDirectory, System.IO.Path.Combine(RedGateToolsPath,&quot;RgPublish.exe&quot;))]" Result="[RedGateExitCode]" WorkingDirectory="[SourcesDirectory]" mtbwt:BuildTrackingParticipant.Importance="None">
                     <mtbwa:InvokeProcess.ErrorDataReceived>
                       <ActivityAction x:TypeArguments="x:String">
                         <ActivityAction.Argument>

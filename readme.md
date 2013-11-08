@@ -13,6 +13,6 @@ There are versions available for both TFS 2010 and 2012.
 **To integrate the custom template into your build process**, you can either:
 
 * **Use these templates directly.** This is easiest. It’s only possible if you are currently using the default build template, as you’ll otherwise lose any customisations you’ve made.
-* **Merge the changes into your build template.** This is a little bit tricky. You need to make sure the right pieces of XML go in the right places.  It’s worth it though, if you’re reusing a custom build template across a number of different projects. The diff is available to [view online](http://diffchecker.com/o2ijdfhr).
+* **Merge the changes into your build template.** This is a little bit tricky. You need to make sure the right pieces of XML go in the right places.  It’s worth it though, if you’re reusing a custom build template across a number of different projects. The diff is available to [view online](http://diffchecker.com/3pmv7mbh).
 
 You'll need to make sure the RgPublish.exe command line is available to the build agent in some way. You could either copy it to your build agent, or commit it to TFS. You can download the latest version of this command line from the Tools menu in your Deployment Manager installation.
