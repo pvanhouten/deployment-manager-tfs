@@ -4,7 +4,7 @@ These files are custom build templates for TFS that allow you to call the RgPubl
 
 They extend the fields available in the build definition, allowing you to easily customise the publish process.
 
-![TFS build definition](http://thefutureofdeployment.com/wp-content/uploads/2013/11/DmTfs.png)
+![TFS build definition](http://thefutureofdeployment.com/wp-content/uploads/2013/11/DmTfs1.png)
 
 The template modifies the build number format to be just the BuildID. The BuildID is an integer that continues to increase, unlike the build revision number that resets each day. The version number of the published package is the value used for Publish version number followed by the build number. Eg. 1.0.0.259. This should be suitable for most cases, but you can always tweak the behaviour as needed.
 
